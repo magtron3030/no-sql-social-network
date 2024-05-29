@@ -3,23 +3,15 @@ const reactionsSchema = require('./Reaction')
 
 const thoughtSchema = new Schema (
    {
-      thoughtText: {
+      thoughttext: {
          type: String,
          required: true,
          minLength: 1,
          maxLength: 280
       },
-      createAt: {
-         date: Date,
-         default: Date.now,
-         get: (date) => {
-            if (date) return date.toString();
-         }
-      },
-      userName: 
+      username: 
          {
-           type: Schema.Types.ObjectId,
-           ref: 'User',
+           type: String,
            required: true
          },
       
@@ -27,9 +19,17 @@ const thoughtSchema = new Schema (
         reactionsSchema
        ],
    },
-);
+   {
+      timestamps: true
+   }
+   );
 
+thoughtSchema
+  .virtual('reactionCount')
+  .get(function () {
+    return this.reactions.length;
+  });
 
-const Thought = model('Thought'. thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;

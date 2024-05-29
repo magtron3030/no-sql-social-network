@@ -9,20 +9,24 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
   async getSingleUser(req, res) {
+    console.log(req.params.userId)
+
+    let user;
     try {
-      const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
-
-      if (!user) {
-        return res.status(404).json({ message: 'No user with that ID' });
-      }
-
-      res.json(user);
+      user = await User.findOne({ _id: req.params.userId })
+      res.json({ user: user});
     } catch (err) {
       res.status(500).json(err);
     }
   },
+  // if (!user) {
+  //   return res.status(404).json({ message: 'No user with that ID' });
+  // }
+  
+  
+  
   // create a new user
   async createUser(req, res) {
     try {
